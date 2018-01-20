@@ -15,6 +15,8 @@ public class BogusActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         startService(new Intent(this, ForwardService.class));
+        startService(new Intent(this, FirebaseIdService.class));
+        startService(new Intent(this, FirebaseService.class));
         finish();
     }
 }
