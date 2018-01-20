@@ -1,6 +1,8 @@
 package com.github.hermod.assistantforwarder;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Application;
 import android.content.Context;
@@ -10,27 +12,33 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 public class Magnetometer implements SensorEventListener {
+    public class Field {
+        public float x, y, z;
+        public Field() {this.x = 0; this.y = 0; this.z = 0;}
+    }
 
     public static int ERROR = -1;
     public static int STOPPED = 0;
     public static int STARTING = 1;
     public static int RUNNING = 2;
 
-    public long TIMEOUT = 30000;        // in milliseconds
+    private long TIMEOUT = 30000;        // in milliseconds
 
-    int status;
-    float x;
-    float y;
-    float z;
-    long timeStamp;
+    private int status;
+    private int calibrationCount;
+    private Field rawField;
+    private Field adjustedField;
+    private Field backgroundField;
+    private long timeStamp;
+
 
     private SensorManager sensorManager; // Sensor manager
-    Sensor magneticSensor;               // Magnetic sensor returned by sensor manager
+    private Sensor magneticSensor;               // Magnetic sensor returned by sensor manager
 
     public Magnetometer() {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
+        this.adjustedField = new Field();
+        this.rawField = new Field();
+        this.backgroundField = new Field();
         this.timeStamp = 0;
         this.setStatus(Magnetometer.STOPPED);
     }
@@ -64,7 +72,30 @@ public class Magnetometer implements SensorEventListener {
             System.out.println("No magnetometer");
         }
 
+        this.calibrate();
+
         return this.status;
+    }
+
+    private void calibrate() {
+        final Timer timer = new Timer();
+        final Timer cancelTimer = new Timer();
+        calibrationCount = 1;
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                backgroundField.x = (backgroundField.x*(calibrationCount-1) + rawField.x)/calibrationCount;
+                backgroundField.y = (backgroundField.y*(calibrationCount-1) + rawField.y)/calibrationCount;
+                backgroundField.z = (backgroundField.z*(calibrationCount-1) + rawField.z)/calibrationCount;
+                calibrationCount++;
+            }
+        }, 0, 10);
+        cancelTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timer.cancel();
+            }
+        }, 5000);
     }
 
     /**
@@ -93,9 +124,12 @@ public class Magnetometer implements SensorEventListener {
      */
     public void onSensorChanged(SensorEvent event) {
         this.timeStamp = System.currentTimeMillis();
-        this.x = event.values[0];
-        this.y = event.values[1];
-        this.z = event.values[2];
+        this.rawField.x = event.values[0];
+        this.rawField.y = event.values[1];
+        this.rawField.z = event.values[2];
+        this.adjustedField.x = this.rawField.x - this.backgroundField.x;
+        this.adjustedField.y = this.rawField.y - this.backgroundField.y;
+        this.adjustedField.z = this.rawField.z - this.backgroundField.z;
     }
 
     /**
@@ -112,8 +146,12 @@ public class Magnetometer implements SensorEventListener {
         this.status = status;
     }
 
+    public Field getNormalizedReadings() {
+        return this.adjustedField;
+    }
+
     @Override
     public String toString() {
-        return String.format("%f %f %f", this.x, this.y, this.z);
+        return String.format("x: %f, y: %f, z: %f", adjustedField.x, adjustedField.y, adjustedField.z);
     }
 }
