@@ -1,10 +1,8 @@
 package com.github.hermod.assistantforwarder;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.app.Application;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -12,9 +10,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 public class Magnetometer implements SensorEventListener {
-    public class Field {
+    public class Vector {
         public double x, y, z;
-        public Field() {this.x = 0; this.y = 0; this.z = 0;}
+        public Vector() {this.x = 0; this.y = 0; this.z = 0;}
     }
 
     public static int ERROR = -1;
@@ -26,17 +24,18 @@ public class Magnetometer implements SensorEventListener {
 
     private int status;
     private int calibrationCount;
-    private Field rawField;
-    private Field adjustedField;
-    private Field backgroundField;
-
+    private Vector rawField;
+    private Vector adjustedField;
+    private Vector backgroundField;
+    private Vector position;
     private SensorManager sensorManager; // Sensor manager
     private Sensor magneticSensor;               // Magnetic sensor returned by sensor manager
 
     public Magnetometer() {
-        this.adjustedField = new Field();
-        this.rawField = new Field();
-        this.backgroundField = new Field();
+        this.adjustedField = new Vector();
+        this.rawField = new Vector();
+        this.backgroundField = new Vector();
+        this.position = new Vector();
         this.setStatus(Magnetometer.STOPPED);
     }
 
@@ -142,8 +141,19 @@ public class Magnetometer implements SensorEventListener {
         this.status = status;
     }
 
-    public Field getNormalizedReadings() {
+    public Vector getNormalizedReadings() {
         return this.adjustedField;
+    }
+
+    public Vector getPosition() {
+        double dist = Math.sqrt(Math.pow(adjustedField.x, 2) + Math.pow(adjustedField.y, 2) + Math.pow(adjustedField.z, 2));
+        if (dist == 0)
+            return position;
+        double cbdist = 1/Math.cbrt(Math.pow(adjustedField.x, 2) + Math.pow(adjustedField.y, 2) + Math.pow(adjustedField.z, 2));
+        position.x = Math.cos(adjustedField.x/dist)*cbdist;
+        position.y = Math.cos(adjustedField.y/dist)*cbdist;
+        position.z = Math.cos(adjustedField.z/dist)*cbdist;
+        return position;
     }
 
     @Override

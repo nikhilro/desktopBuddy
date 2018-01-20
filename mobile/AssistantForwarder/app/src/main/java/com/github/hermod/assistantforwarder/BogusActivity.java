@@ -17,6 +17,7 @@ public class BogusActivity extends Activity {
         startService(new Intent(this, ForwardService.class));
         startService(new Intent(this, FirebaseIdService.class));
         startService(new Intent(this, FirebaseService.class));
+        System.out.println(FirebaseIdService.getToken());
         finish();
     }
 }

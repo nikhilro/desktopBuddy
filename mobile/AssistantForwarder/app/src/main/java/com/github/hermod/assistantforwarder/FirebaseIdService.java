@@ -7,7 +7,7 @@ public class FirebaseIdService extends FirebaseInstanceIdService {
     private static String token;
 
     public static String getToken() {
-        return token;
+        return FirebaseInstanceId.getInstance().getToken();
     }
     @Override
     public void onTokenRefresh() {
