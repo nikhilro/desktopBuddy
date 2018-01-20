@@ -1,0 +1,33 @@
+{
+    "name": "com.magnetic.mouse",
+    "displayName": "Magnetic Mouse",
+    "version": "1.0.0",
+    "description": "Android app built with Cordova to remotely control desktop input using voice commands and the built-in magnetometer.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Edwin Zhang, Dmytro Shynkevych, Nikhil Gupta, Callum Moseley",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "actions-on-google": "^1.7.0",
+        "cordova-android": "^7.0.0",
+        "cordova-plugin-background-mode": "^0.7.2",
+        "cordova-plugin-device": "^2.0.1",
+        "cordova-plugin-magnetometer": "^1.0.0",
+        "cordova-plugin-whitelist": "^1.3.3",
+        "cz.blocshop.socketsforcordova": "^1.1.0",
+        "socket.io": "^2.0.4"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-whitelist": {},
+            "cordova-plugin-magnetometer": {},
+            "cordova-plugin-background-mode": {},
+            "cz.blocshop.socketsforcordova": {}
+        },
+        "platforms": [
+            "android"
+        ]
+    }
+}
