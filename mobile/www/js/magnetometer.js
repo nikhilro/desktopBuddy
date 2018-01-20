@@ -2,6 +2,7 @@ var magnitudeText = document.getElementById('magnitude');
 var coordinates = document.getElementById('coordinates');
 var lastReading = { x: 0, y: 0, z: 0, magnitude: 0 };
 var avgField = { x: 0, y: 0, z: 0, magnitude: 0 };
+var position = { x: 0, y: 0, z: 0, magnitude: 0 };
 var interval = 0;
 
 function displayReadings() {
@@ -59,6 +60,21 @@ function calibrateMagnetometer() {
         window.clearInterval(cInterval);
         interval = window.setInterval(displayReadings, 100);
     }, 5000);
+}
+
+//
+//Distance = (1/sqrt(bx^2+by^2+bz^2))^1/3 where b is the magnetic field. Formula based on observations done by Shun and gang (thanks m8)
+//
+function getPosition(){
+    var tempDis = Math.pow(avgField.x**2 + avgField.y**2 + avgField.z**2, 1/2); 
+    if (tempDis != 0){
+        var dist = 1/ Math.pow(avgField.x**2 , avgField.y**2 , avgField.z**2 , 1/3);
+        position.x = Math.cos(avgField.x/tempDis)*dist;
+        position.y = Math.cos(avgField.y/tempDis)*dist;
+        position.z = Math.cos(avgField.z/tempDis)*dist;
+    } else {
+        alert("tempDis == 0");
+    }
 }
 
 function stop() {
