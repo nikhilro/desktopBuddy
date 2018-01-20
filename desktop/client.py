@@ -5,7 +5,7 @@ import struct
 import os
 
 HOST = "localhost"
-PORT = 10001
+PORT = 12345
 
 '''
 0 = move the mouse -> uses sockets to get the new coordinates
@@ -24,7 +24,7 @@ PORT = 10001
 
 def startClient():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.bind((HOST, PORT))1
+    s.bind((HOST, PORT))
     print("Starting client...")
     
     prevX = 0.0
@@ -40,7 +40,7 @@ def startClient():
 
         # move the mouse
         if command == 0:
-            coords = struct.unpack('<3f', data[1:])
+            coords = struct.unpack('<3d', data[1:])
             print(coords)
             x = coords[0]
             y = coords[1]
