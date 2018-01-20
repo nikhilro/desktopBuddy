@@ -54,6 +54,11 @@ public class ForwardService extends Service {
         }
     }
 
+    public void sendApplication(String application) {
+        byte[] bApp = application.getBytes();
+        this.sendData(ByteBuffer.allocate(bApp.length + 1).put((byte)9).put(bApp).array());
+    }
+
     public void sendClick(boolean right) {
         // Click (1), repetitions (1), left/right (0/1)
         this.sendData(ByteBuffer.allocate(3).put((byte)1).put((byte)1).put(right? (byte)1 : (byte)0).array());
@@ -63,6 +68,11 @@ public class ForwardService extends Service {
         byte[] bKeyname = keyname.getBytes();
         // Key (7), keyname (bytes[])
         this.sendData(ByteBuffer.allocate(bKeyname.length + 1).put((byte)7).put(bKeyname).array());
+    }
+
+    public void sendShortcut(String shortcut) {
+        byte[] bShortcut = shortcut.getBytes();
+        this.sendData(ByteBuffer.allocate(bShortcut.length + 1).put((byte)8).put(bShortcut).array());
     }
 
     public void sendText(String text) {

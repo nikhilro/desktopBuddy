@@ -16,6 +16,8 @@ public class FirebaseService extends FirebaseMessagingService {
     private final static String RIGHTCLICK = "mouse.rightclick";
     private final static String ENTER = "keyboard.enter";
     private final static String TYPE = "keyboard.type";
+    private final static String PAGEUP = "keyboard.pageup";
+    private final static String PAGEDOWN = "keyboard.pagedown";
     private final static String BACK = "browser.back";
     private final static String OPEN = "browser.open";
     private final static String NEWTAB = "browser.newtab";
@@ -23,6 +25,8 @@ public class FirebaseService extends FirebaseMessagingService {
     private final static String PAUSE = "media.pause";
     private final static String PLAY = "media.play";
     private final static String SKIP = "media.skip";
+    private final static String VOLUMEUP = "media.volumeup";
+    private final static String VOLUMEDOWN = "media.pageup";
 
 
     private ForwardService forwardService;
@@ -52,13 +56,19 @@ public class FirebaseService extends FirebaseMessagingService {
                 case TYPE:
                     forwardService.sendText(data.get("typed"));
                     break;
+                case PAGEUP:
+                    forwardService.sendKey("pgup");
+                    break;
+                case PAGEDOWN:
+                    forwardService.sendKey("pgdn");
+                    break;
                 case BACK:
                     forwardService.sendKey("browserback");
                     break;
-                //case OPEN:
-                //    forwardService.openChrome();
+                case OPEN:
+                    forwardService.sendApplication("chrome");
                 case NEWTAB:
-                    forwardService.sendKey("ctrl+t");
+                    forwardService.sendShortcut("ctrl+t");
                     break;
                 //case DRIVE:
                 //    forwardService.openURL("https://drive.google.com");
@@ -68,6 +78,12 @@ public class FirebaseService extends FirebaseMessagingService {
                     break;
                 case SKIP:
                     forwardService.sendKey("nexttrack");
+                    break;
+                case VOLUMEUP:
+                    forwardService.sendKey("volumeup");
+                    break;
+                case VOLUMEDOWN:
+                    forwardService.sendKey("volumedown");
                     break;
             }
         }
