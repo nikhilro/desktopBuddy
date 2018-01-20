@@ -67,17 +67,17 @@ def startClient():
         elif command == 2:
             upDown = int(data[1])
             isHor = int(data[2]) # default 0
-            if isHor == 0
+            if isHor == 0:
                 pyautogui.scroll(direction * scrollSensitivity)
-            else 
+            else:
                 pyautogui.hscroll(direction * scrollSensitivity)
         
         # hold/select
         elif command == 3:
-            if isOn == 0
+            if isOn == 0:
                 isOn = 1
                 pyautogui.mouseDown()
-            else
+            else:
                 isOn = 0
                 pyautogui.mouseUp()
             
@@ -93,21 +93,21 @@ def startClient():
             isMult = int(data[2]) 
             isDec  = int(data[3])
             number = int(data[4])
-            if isMult == 0
-                if isScroll == 0
+            if isMult == 0:
+                if isScroll == 0:
                     mouseSensitivity = mouseSensitivity + number 
-                else
+                else:
                     scrollSensitivity = scrollSensitivity + number
-            else 
-                 if isDec == 0
-                    if isScroll == 0
+            else:
+                if isDec == 0:
+                    if isScroll == 0:
                         mouseSensitivity = mouseSensitivity * number 
-                    else
+                    else:
                         scrollSensitivity = scrollSensitivity * number
-                else 
-                    if isScroll == 0
+                else:
+                    if isScroll == 0:
                         mouseSensitivity = mouseSensitivity / number 
-                    else
+                    else:
                         scrollSensitivity = scrollSensitivity / number
 
         # write stuff
@@ -125,25 +125,25 @@ def startClient():
         # ['copy', 'paste', 'cut', 'undo', 'redo', 'tabs', 'desktopright', 'desktopleft', 'desktopnew', 'gohome']
         elif command == 8:
             operation = data[1:].decode("utf-8")
-            if operation == 'copy'
+            if operation == 'copy':
                 pyautogui.hotkey('ctrl', 'c')
-            elif operation == 'paste'
+            elif operation == 'paste':
                 pyautogui.hotkey('ctrl', 'v')
-            elif operation == 'cut'
+            elif operation == 'cut':
                 pyautogui.hotkey('ctrl', 'x')
-            elif operation == 'undo'
+            elif operation == 'undo':
                 pyautogui.hotkey('ctrl', 'z')
-            elif operation == 'redo'
+            elif operation == 'redo':
                 pyautogui.hotkey('ctrl', 'y')
-            elif operation == 'tabs'
+            elif operation == 'tabs':
                 pyautogui.hotkey('win', 'tab')
-            elif operation == 'desktopright'
+            elif operation == 'desktopright':
                 pyautogui.hotkey('win', 'shift', 'right')
-            elif operation == 'desktopleft'
+            elif operation == 'desktopleft':
                 pyautogui.hotkey('win', 'shift', 'left')
-            elif operation == 'desktopnew'
+            elif operation == 'desktopnew':
                 pyautogui.hotkey('win', 'ctrl', 'd')
-            elif operation == 'gohome'
+            elif operation == 'gohome':
                 pyautogui.hotkey('win', 'd')
         
         # open application
@@ -157,10 +157,9 @@ def startClient():
                 os.system(operation)
 
         # run commands in terminal
-        elif command == 10
+        elif command == 10:
             operation = data[1:].decode("utf-8")
             os.system(operation)
-
 
     s.close()
 
