@@ -44,6 +44,7 @@ public class ForwardService extends Service {
     }
 
     private void sendData(byte[] data) {
+        System.out.println(data);
         DatagramPacket sendPacket = new DatagramPacket(data, data.length, dest, destPort);
         try {
             socket.send(sendPacket);
