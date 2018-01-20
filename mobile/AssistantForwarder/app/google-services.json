@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "37623261109",
+    "firebase_url": "https://take-control-4799b.firebaseio.com",
+    "project_id": "take-control-4799b",
+    "storage_bucket": "take-control-4799b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37623261109:android:6c3cc5c7f5c2392e",
+        "android_client_info": {
+          "package_name": "net.callummoseley.magnetmouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37623261109-tq1feh7vhj6vi9v1tiqeh502bmi02fj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.callummoseley.magnetmouse",
+            "certificate_hash": "1da4b541613ef850a33a891e6dbc5ec405345936"
+          }
+        },
+        {
+          "client_id": "37623261109-22dp2oeol9dr75ppop6sti61ff9buu21.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "37623261109-flan5510u20e31irpr5l1dsm9sdnjqqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcbAmQgCVc2Y0uGYFG9ZX7T3oHnpqVjpU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37623261109-22dp2oeol9dr75ppop6sti61ff9buu21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37623261109:android:7fbc72d0f3512a29",
+        "android_client_info": {
+          "package_name": "com.github.hermod.assistantforwarder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37623261109-s75qk5ngi0vvpvon40s8ioaued1994nj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.hermod.assistantforwarder",
+            "certificate_hash": "b6fb4f50e33410585409fcafefee5a99fd7c1095"
+          }
+        },
+        {
+          "client_id": "37623261109-22dp2oeol9dr75ppop6sti61ff9buu21.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "37623261109-flan5510u20e31irpr5l1dsm9sdnjqqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcbAmQgCVc2Y0uGYFG9ZX7T3oHnpqVjpU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37623261109-22dp2oeol9dr75ppop6sti61ff9buu21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
