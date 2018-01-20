@@ -71,7 +71,8 @@ public class ForwardService extends Service {
     }
 
     public void sendPosition() {
-        byte[] sendData = serializeData((byte)0, magnetometer.getPosition());
+        byte[] data = serializeData((byte)0, magnetometer.getPosition());
+        this.sendData(data);
         System.out.println(magnetometer.toString());
     }
 
