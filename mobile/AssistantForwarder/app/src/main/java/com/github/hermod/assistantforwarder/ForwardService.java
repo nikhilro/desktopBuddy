@@ -72,9 +72,9 @@ public class ForwardService extends Service {
 
     public void sendPosition() {
         Magnetometer.Vector field = magnetometer.getNormalizedReadings();
-        if (field.x*field.x + field.y*field.y + field.z*field.z < 2)
+        if (field.x*field.x + field.y*field.y + field.z*field.z < 10)
             return;
-        byte[] data = serializeData((byte)0, magnetometer.getNormalizedReadings());
+        byte[] data = serializeData((byte)0, field);
         this.sendData(data);
         System.out.println(magnetometer.toString());
     }
