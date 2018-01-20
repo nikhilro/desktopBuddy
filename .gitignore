@@ -3,3 +3,4 @@ mobile/plugins/*
 mobile/platforms/*
 .DS_Store
 .vscode/*
+.idea/*
