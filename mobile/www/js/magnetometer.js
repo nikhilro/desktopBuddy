@@ -1,18 +1,21 @@
 var magnitudeText = document.getElementById('magnitude');
 var coordinates = document.getElementById('coordinates');
 var lastReading = { x: 0, y: 0, z: 0, magnitude: 0 };
+var avgField = { x: 0, y: 0, z: 0, magnitude: 0 };
 var interval = 0;
 
 function displayReadings() {
     // calculations
     var reading = lastReading;
-    var x = reading.x;
-    var y = reading.y;
-    var z = reading.z;
-    var magnitude = reading.magnitude;
+    var x = reading.x - avgField.x;
+    var y = reading.y - avgField.y;
+    var z = reading.z - avgField.z;
+    var magnitude = reading.magnitude - avgField.magnitude;
     // display numbers
-    magnitudeText.innerText = [magnitude, 'μT'].join('');
-    coordinates.innerText = ['X: ', x, ', Y: ', y, ', Z: ', z].join('');
+    magnitudeText.innerText = [magnitude.toFixed(3), 'μT'].join('');
+    coordinates.innerText = ['X: ', x.toFixed(3),
+                           ', Y: ', y.toFixed(3),
+                           ', Z: ', z.toFixed(3)].join('');
 }
 
 function watchMagnetometer() {
@@ -21,18 +24,16 @@ function watchMagnetometer() {
             function success (reading) {
                 // collect readings to three decimal places
                 lastReading = {
-                    x: reading.x.toFixed(3),
-                    y: reading.y.toFixed(3),
-                    z: reading.z.toFixed(3),
-                    magnitude: reading.magnitude.toFixed(3)
+                    x: reading.x,
+                    y: reading.y,
+                    z: reading.z,
+                    magnitude: reading.magnitude
                 };
             },
             function error (err) {
                 alert(err);
             }
         );
-        // refresh rate (ms)
-        interval = window.setInterval(displayReadings, 100);
     }
     else {
         alert('cordova = ' + !!window.cordova);
@@ -41,8 +42,23 @@ function watchMagnetometer() {
     }
 }
 
-function calibrateReadings(x, y, z) {
-  // fancy algorithm to convert sensor data to relative cursor movement
+function calibrateMagnetometer() {
+    var iterations = 0;
+    var cInterval = window.setInterval(function() {
+        avgField.x += lastReading.x;
+        avgField.y += lastReading.y;
+        avgField.z += lastReading.z;
+        avgField.magnitude += lastReading.magnitude;
+        iterations++;
+    }, 100);
+    window.setTimeout(function() {
+        avgField.x /= iterations;
+        avgField.y /= iterations;
+        avgField.z /= iterations;
+        avgField.magnitude /= iterations;
+        window.clearInterval(cInterval);
+        interval = window.setInterval(displayReadings, 100);
+    }, 5000);
 }
 
 function stop() {
@@ -52,6 +68,11 @@ function stop() {
     }
 }
 
+function initMagnetometer() {
+    watchMagnetometer();
+    calibrateMagnetometer();
+}
+
 document.addEventListener("pause", stop, false);
 document.addEventListener("resume", watchMagnetometer, false);
-document.addEventListener("deviceready", watchMagnetometer, false);
+document.addEventListener("deviceready", initMagnetometer, false);
