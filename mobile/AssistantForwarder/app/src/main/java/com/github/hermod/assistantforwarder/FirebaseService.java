@@ -31,7 +31,7 @@ public class FirebaseService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage message){
         Map<String, String> data = message.getData();
         if (data.size() > 0) {
-            switch (data.get("command")) {
+            switch (data.get("action")) {
                 case ACTIVATE:
                     if(!forwardService.running)
                         forwardService.start();
@@ -45,7 +45,7 @@ public class FirebaseService extends FirebaseMessagingService {
                 case ENTER:
                     forwardService.sendKey("enter");
                 case TYPE:
-                    forwardService.sendText(data.get("type"));
+                    forwardService.sendText(data.get("typed"));
                 case BACK:
                     forwardService.sendKey("browserback");
                 //case OPEN:
