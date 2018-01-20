@@ -13,7 +13,7 @@ import android.hardware.SensorManager;
 
 public class Magnetometer implements SensorEventListener {
     public class Field {
-        public float x, y, z;
+        public double x, y, z;
         public Field() {this.x = 0; this.y = 0; this.z = 0;}
     }
 
@@ -29,8 +29,6 @@ public class Magnetometer implements SensorEventListener {
     private Field rawField;
     private Field adjustedField;
     private Field backgroundField;
-    private long timeStamp;
-
 
     private SensorManager sensorManager; // Sensor manager
     private Sensor magneticSensor;               // Magnetic sensor returned by sensor manager
@@ -39,7 +37,6 @@ public class Magnetometer implements SensorEventListener {
         this.adjustedField = new Field();
         this.rawField = new Field();
         this.backgroundField = new Field();
-        this.timeStamp = 0;
         this.setStatus(Magnetometer.STOPPED);
     }
 
@@ -123,7 +120,6 @@ public class Magnetometer implements SensorEventListener {
      * @param event
      */
     public void onSensorChanged(SensorEvent event) {
-        this.timeStamp = System.currentTimeMillis();
         this.rawField.x = event.values[0];
         this.rawField.y = event.values[1];
         this.rawField.z = event.values[2];

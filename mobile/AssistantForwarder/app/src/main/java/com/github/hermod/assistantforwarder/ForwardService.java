@@ -25,7 +25,7 @@ public class ForwardService extends Service {
     private Timer timer;
     private DatagramSocket socket;
     private InetAddress dest;
-    private int destPort = 10001;
+    private int destPort = 12345;
 
     protected class MagnetometerTask extends TimerTask {
         private ForwardService parent;
@@ -44,7 +44,8 @@ public class ForwardService extends Service {
     }
 
     private byte[] serializeData(byte command, Magnetometer.Field field) {
-        return ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN).put(command).putFloat(field.x).putFloat(field.y).putFloat(field.z).array();
+        long millis = System.currentTimeMillis();
+        return ByteBuffer.allocate(33).order(ByteOrder.LITTLE_ENDIAN).putLong(millis).put(command).putDouble(field.x).putDouble(field.y).putDouble(field.z).array();
     }
 
     public void sendData() {
@@ -68,7 +69,7 @@ public class ForwardService extends Service {
             socket = new DatagramSocket(destPort);
             dest = InetAddress.getByName("100.64.135.133");
             timer = new Timer();
-            timer.scheduleAtFixedRate(new MagnetometerTask(this), 100, 10);
+            timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 100);
         }
         catch (Exception e) {System.out.println(e);}
     }
