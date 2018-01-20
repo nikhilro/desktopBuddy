@@ -35,30 +35,40 @@ public class FirebaseService extends FirebaseMessagingService {
                 case ACTIVATE:
                     if(!forwardService.running)
                         forwardService.start();
+                    break;
                 case DEACTIVATE:
                     if(forwardService.running)
                         forwardService.pause();
+                    break;
                 case LEFTCLICK:
                     forwardService.sendClick(false);
+                    break;
                 case RIGHTCLICK:
                     forwardService.sendClick(true);
+                    break;
                 case ENTER:
                     forwardService.sendKey("enter");
+                    break;
                 case TYPE:
                     forwardService.sendText(data.get("typed"));
+                    break;
                 case BACK:
                     forwardService.sendKey("browserback");
+                    break;
                 //case OPEN:
                 //    forwardService.openChrome();
                 case NEWTAB:
                     forwardService.sendKey("ctrl+t");
+                    break;
                 //case DRIVE:
                 //    forwardService.openURL("https://drive.google.com");
                 case PAUSE:
                 case PLAY:
                     forwardService.sendKey("playpause");
+                    break;
                 case SKIP:
                     forwardService.sendKey("nexttrack");
+                    break;
             }
         }
     }
