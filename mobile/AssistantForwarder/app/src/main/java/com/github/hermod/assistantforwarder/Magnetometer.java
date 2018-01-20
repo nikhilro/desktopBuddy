@@ -39,14 +39,6 @@ public class Magnetometer implements SensorEventListener {
         this.setStatus(Magnetometer.STOPPED);
     }
 
-    public void onDestroy() {
-        this.stop();
-    }
-
-    public void onReset() {
-        this.stop();
-    }
-
     /**
      * Start listening
      *
