@@ -1,5 +1,5 @@
-node_modules/*
-plugins/*
-platforms/*
+mobile/node_modules/*
+mobile/plugins/*
+mobile/platforms/*
 .DS_Store
 .vscode/*

@@ -11,7 +11,7 @@ function sendData() {
 function connectServer() {
   var socket = new Socket();
   socket.open(
-    "100.64.135.133",
+    "100.64.191.22",
     10001,
     sendData,
     function(errorMessage) {
