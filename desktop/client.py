@@ -4,7 +4,9 @@ import time
 import struct
 import os
 
-HOST = "localhost"
+pyautogui.FAILSAFE = False
+
+HOST = "100.64.135.133"
 PORT = 12345
 
 '''
@@ -26,10 +28,6 @@ def startClient():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind((HOST, PORT))
     print("Starting client...")
-    
-    prevX = 0.0
-    prevY = 0.0
-    prevZ = 0.0
     mouseSensitivity = 3.0       # tolerance for magnetic field fluctuation
     scrollSensitivity = 10.0     # number of clicks to scroll
     isOn = 0
@@ -37,6 +35,9 @@ def startClient():
     while True:
         data, addr = s.recvfrom(1024)
         command = int(data[0])
+        prevX = 0
+        prevY = 0
+        prevZ = 0
 
         # move the mouse
         if command == 0:
@@ -116,10 +117,10 @@ def startClient():
             pyautogui.typewrite(string)
         
         # hotkeys
-        # ['accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace', 'browserback', 'browserfavorites', 'browserforward', 'browserhome', 'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear', 'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete', 'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10', 'f11', 'f12', 'f13', 'f14', 'f15', 'f16', 'f17', 'f18', 'f19', 'f2', 'f20', 'f21', 'f22', 'f23', 'f24', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja', 'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail', 'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack', 'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6','num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn', 'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn', 'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator', 'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab', 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen', 'command', 'option', 'optionleft', 'optionright']
+        # ['accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace', 'browserback', 'browserfavorites', 'browserforward', 'browserhome', 'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear', 'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete', 'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10', 'f11', 'f12', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja', 'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail', 'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack', 'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6','num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn', 'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn', 'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator', 'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab', 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen', 'command', 'option', 'optionleft', 'optionright']
         elif command == 7:
             operation = data[1:].decode("utf-8") 
-            pyautogui.keydown(operation)
+            pyautogui.keyDown(operation)
         
         # keyboard shortcuts
         # ['copy', 'paste', 'cut', 'undo', 'redo', 'tabs', 'desktopright', 'desktopleft', 'desktopnew', 'gohome']
@@ -127,6 +128,8 @@ def startClient():
             operation = data[1:].decode("utf-8")
             if operation == 'copy':
                 pyautogui.hotkey('ctrl', 'c')
+            elif operation == 'find':
+                pyautogui.hotkey('ctrl', 'f')
             elif operation == 'paste':
                 pyautogui.hotkey('ctrl', 'v')
             elif operation == 'cut':
