@@ -1,8 +1,9 @@
 import pyautogui
 import socket
 import time
+import json
 
-host = "100.64.135.133"
+host = "localhost"
 port = 10001
 
 def startClient():
@@ -17,13 +18,15 @@ def startClient():
         data = conn.recv(1024)
         for ch in data:
             print('{}\n'.format(ord(ch)))
-            
+
         #TODO parse data here
         # scroll
         # move cursor
         # left click, right click, double click
         # center cursor
         # type
+        json.loads(data.decode('utf-8'))
+
 
     s.close()
 
