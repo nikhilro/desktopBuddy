@@ -19,6 +19,7 @@ public class ForwardService extends Service {
     private InetAddress dest;
     private int destPort = 12345;
 
+    public boolean running;
     public static ForwardService sInstance; // Forgive me, for I have sinned
 
     protected class MagnetometerTask extends TimerTask {
@@ -52,7 +53,7 @@ public class ForwardService extends Service {
         }
     }
 
-    public void sendClick(Boolean right) {
+    public void sendClick(boolean right) {
         // Click (1), repetitions (1), left/right (0/1)
         this.sendData(ByteBuffer.allocate(3).put((byte)1).put((byte)1).put(right? (byte)1 : (byte)0).array());
     }
@@ -74,10 +75,12 @@ public class ForwardService extends Service {
     }
 
     public void pause() {
+        running = false;
         timer.cancel();
     }
 
     public void start() {
+        running = true;
         timer = new Timer();
         timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 100);
     }

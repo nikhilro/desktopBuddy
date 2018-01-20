@@ -33,9 +33,11 @@ public class FirebaseService extends FirebaseMessagingService {
         if (data.size() > 0) {
             switch (data.get("command")) {
                 case ACTIVATE:
-                    forwardService.start();
+                    if(!forwardService.running)
+                        forwardService.start();
                 case DEACTIVATE:
-                    forwardService.pause();
+                    if(forwardService.running)
+                        forwardService.pause();
                 case LEFTCLICK:
                     forwardService.sendClick(false);
                 case RIGHTCLICK:
