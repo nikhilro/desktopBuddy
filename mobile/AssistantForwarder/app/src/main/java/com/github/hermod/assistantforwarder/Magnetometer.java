@@ -1,10 +1,15 @@
+package com.github.hermod.assistantforwarder;
+
 import java.util.List;
+
+import android.app.Application;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-public class Magnetometer implements SensorEventListener  {
+public class Magnetometer implements SensorEventListener {
 
     public static int ERROR = -1;
     public static int STOPPED = 0;
@@ -13,14 +18,14 @@ public class Magnetometer implements SensorEventListener  {
 
     public long TIMEOUT = 30000;        // in milliseconds
 
-    int status;                         
-    float x;                           
-    float y;                            
-    float z;                            
-    long timeStamp;                     
+    int status;
+    float x;
+    float y;
+    float z;
+    long timeStamp;
 
-    private SensorManager sensorManager;// Sensor manager
-    Sensor magneticSensor;                     // Magnetic sensor returned by sensor manager
+    private SensorManager sensorManager; // Sensor manager
+    Sensor magneticSensor;               // Magnetic sensor returned by sensor manager
 
     public Magnetometer() {
         this.x = 0;
@@ -48,17 +53,15 @@ public class Magnetometer implements SensorEventListener  {
             return this.status;
         }
 
-        @SuppressWarnings("deprecation")
-        List<Sensor> list = this.sensorManager.getSensorList(Sensor.TYPE_MAGNETIC_FIELD);
+        this.sensorManager = (SensorManager)BogusApplication.getContext().getSystemService(Context.SENSOR_SERVICE);
+        this.magneticSensor = this.sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
         // Register as listener if found
-        if (list != null && list.size() > 0) {
-            this.magneticSensor = list.get(0);
+        if (this.magneticSensor != null) {
             this.sensorManager.registerListener(this, this.magneticSensor, SensorManager.SENSOR_DELAY_FASTEST);
             this.setStatus(Magnetometer.STARTING);
-        }
-        else {
-            this.setStatus(Magnetometer.ERROR);
+        } else {
+            System.out.println("No magnetometer");
         }
 
         return this.status;
@@ -79,7 +82,7 @@ public class Magnetometer implements SensorEventListener  {
      */
     private void timeout() {
         if (this.status == Magnetometer.STARTING) {
-            this.setStatus(Magnetometer.ERROR_FAILED_TO_START);
+            this.setStatus(Magnetometer.ERROR);
         }
     }
 
@@ -97,9 +100,20 @@ public class Magnetometer implements SensorEventListener  {
 
     /**
      * Required by SensorEventListener
+     *
      * @param sensor
      * @param accuracy
      */
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // do nothing
     }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%f %f %f", this.x, this.y, this.z);
+    }
+}
