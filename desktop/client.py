@@ -3,6 +3,7 @@ import socket
 import time
 import struct
 import os
+import math
 
 pyautogui.FAILSAFE = False
 
@@ -28,7 +29,7 @@ def startClient():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind((HOST, PORT))
     print("Starting client...")
-    mouseSensitivity = 3.0       # tolerance for magnetic field fluctuation
+    mouseSensitivity = 30.0       # tolerance for magnetic field fluctuation
     scrollSensitivity = 10.0     # number of clicks to scroll
     isOn = 0
 
@@ -37,7 +38,6 @@ def startClient():
         command = int(data[0])
         prevX = 0
         prevY = 0
-        prevZ = 0
 
         # move the mouse
         if command == 0:
@@ -46,13 +46,13 @@ def startClient():
             x = coords[0]
             y = coords[1]
             z = coords[2]
-            diffX = x - prevX
-            diffY = y - prevY
-            diffZ = z - prevZ
-            pyautogui.moveRel(diffX * mouseSensitivity, diffZ * mouseSensitivity)
-            prevX = x
-            prevY = y
-            prevZ = z
+            angle = math.atan(y / z)
+            distance = (1/math.sqrt(x*x+y*y+z*z))**(1.0/3.0)
+            screenX = math.sin(angle) * distance
+            screenY = math.cos(angle) * distance
+            pyautogui.moveRel(screenX * mouseSensitivity, screenY * mouseSensitivity)
+            prevX = screenX
+            prevY = screenY
 
         # click
         elif command == 1:
