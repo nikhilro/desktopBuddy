@@ -37,7 +37,7 @@ def startClient():
         data, addr = s.recvfrom(1024)
         command = int(data[0])
         prevX = 0
-        prevY = 0
+        prevZ = 0
 
         # move the mouse
         if command == 0:
@@ -46,13 +46,13 @@ def startClient():
             x = coords[0]
             y = coords[1]
             z = coords[2]
-            angle = math.atan(y / z)
+            angle = math.atan(x / z)
             distance = (1/math.sqrt(x*x+y*y+z*z))**(1.0/3.0)
             screenX = math.sin(angle) * distance
-            screenY = math.cos(angle) * distance
-            pyautogui.moveRel(screenX * mouseSensitivity, screenY * mouseSensitivity)
+            screenZ = math.sin(angle) * distance
+            pyautogui.moveRel(screenX * mouseSensitivity, screenZ * mouseSensitivity)
             prevX = screenX
-            prevY = screenY
+            prevZ = screenZ
 
         # click
         elif command == 1:
