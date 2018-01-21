@@ -22,6 +22,10 @@ public class ForwardService extends Service {
     public boolean running;
     public static ForwardService sInstance; // Forgive me, for I have sinned
 
+    public void changeIP(InetAddress dst) {
+        dest = dst;
+    }
+
     protected class MagnetometerTask extends TimerTask {
         private ForwardService parent;
         public MagnetometerTask(ForwardService parent) {

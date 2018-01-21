@@ -28,7 +28,7 @@ public class FirebaseService extends FirebaseMessagingService {
     private final static String SKIP = "media.skip";
     private final static String VOLUMEUP = "media.volumeup";
     private final static String VOLUMEDOWN = "media.pageup";
-
+    private final static String CONTROL = "take.control";
 
     private ForwardService forwardService;
 
@@ -85,6 +85,17 @@ public class FirebaseService extends FirebaseMessagingService {
                     break;
                 case VOLUMEDOWN:
                     forwardService.sendKey("volumedown");
+                    break;
+                case CONTROL:
+                    String target = data.get("target").replace("'s", "").toLowerCase();
+                    if (target.equals("edwin")) {
+                        forwardService.changeIP(InetAddress.getByName("100.64.135.133"));
+                    } else if (target.equals("callum") || target.equals("calum")) {
+                        forwardService.changeIP(InetAddress.getByName("100.64.130.123"));
+                    } else if (target.equals("nikhil")) {
+                        forwardService.changeIP(InetAddress.getByName("100.64.130.123"));
+                    }
+
                     break;
             }
         }
