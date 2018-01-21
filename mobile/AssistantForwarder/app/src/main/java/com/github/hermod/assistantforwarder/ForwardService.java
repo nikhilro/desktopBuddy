@@ -44,7 +44,7 @@ public class ForwardService extends Service {
     }
 
     private void sendData(byte[] data) {
-        System.out.println(data);
+        // System.out.println(data);
         DatagramPacket sendPacket = new DatagramPacket(data, data.length, dest, destPort);
         try {
             socket.send(sendPacket);
@@ -95,7 +95,7 @@ public class ForwardService extends Service {
     public void start() {
         running = true;
         timer = new Timer();
-        timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 10);
+        timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 300);
     }
 
     @Override

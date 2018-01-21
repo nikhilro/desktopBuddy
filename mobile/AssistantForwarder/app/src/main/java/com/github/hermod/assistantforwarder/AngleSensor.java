@@ -16,37 +16,23 @@ public class AngleSensor implements SensorEventListener {
     private final float[] mRotationMatrix = new float[9];
     private final float[] mOrientationAngles = new float[3];
     private SensorManager sensorManager; // Sensor manager
-    private Sensor accelerometer;
-    private Sensor magnetometer;
+    private Sensor orientation;
 
     public void start() {
         sensorManager = (SensorManager)BogusApplication.getContext().getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        sensorManager.registerListener(this, this.accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
-        sensorManager.registerListener(this, this.magnetometer, SensorManager.SENSOR_DELAY_FASTEST);
+        orientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        sensorManager.registerListener(this, this.orientation, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            System.arraycopy(event.values, 0, mAccelerometerReading,
-                    0, mAccelerometerReading.length);
-        }
-        else {
-            System.arraycopy(event.values, 0, mMagnetometerReading,
-                    0, mMagnetometerReading.length);
-        }
+        mOrientationAngles[0] = event.values[0];
+        mOrientationAngles[1] = event.values[1];
+        mOrientationAngles[2] = event.values[2];
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // do nothing
     }
 
-    public float[] getReadings() { updateOrientationAngles(); return this.mOrientationAngles; }
-
-    public void updateOrientationAngles() {
-        sensorManager.getRotationMatrix(mRotationMatrix, null,
-                mAccelerometerReading, mMagnetometerReading);
-        sensorManager.getOrientation(mRotationMatrix, mOrientationAngles);
-    }
+    public float[] getReadings() { return this.mOrientationAngles; }
 }
