@@ -101,7 +101,7 @@ public class ForwardService extends Service {
     public void calibrate() {
         magnetometer.calibrate();
         Magnetometer.Vector background = magnetometer.getBackgroundReadings();
-        this.sendData(ByteBuffer.allocate(9).put((byte)4).putDouble(background.x).putDouble(background.z).array());
+        this.sendData(ByteBuffer.allocate(17).put((byte)4).putDouble(background.x).putDouble(background.z).array());
     }
 
     @Override
