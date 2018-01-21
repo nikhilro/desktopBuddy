@@ -64,6 +64,8 @@ public class Magnetometer implements SensorEventListener {
             System.out.println("No magnetometer");
         }
 
+        this.calibrate();
+
         return this.status;
     }
 
