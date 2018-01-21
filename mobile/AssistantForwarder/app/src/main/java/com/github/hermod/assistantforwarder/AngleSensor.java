@@ -26,13 +26,28 @@ public class AngleSensor implements SensorEventListener {
             public void run() {
                 calibrate();
             }
-        }, 2000);
+        }, 1000);
     }
 
     public void calibrate() {
-        mBackGroundAngles[0] = mOrientationAngles[0];
-        mBackGroundAngles[1] = mOrientationAngles[1];
-        mBackGroundAngles[2] = mOrientationAngles[2];
+        final Timer timer = new Timer();
+        final Timer cancelTimer = new Timer();
+        calibrationCount = 1;
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                mBackGroundAngles[0] = (mBackGroundAngles[0]*(calibrationCount-1) + mOrientationAngles[0])/calibrationCount;
+                mBackGroundAngles[1] = (mBackGroundAngles[1]*(calibrationCount-1) + mOrientationAngles[1])/calibrationCount;
+                mBackGroundAngles[2] = (mBackGroundAngles[2]*(calibrationCount-1) + mOrientationAngles[2])/calibrationCount;
+                calibrationCount++;
+            }
+        }, 0, 10);
+        cancelTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                timer.cancel();
+            }
+        }, 1000);
     }
 
     public void onSensorChanged(SensorEvent event) {

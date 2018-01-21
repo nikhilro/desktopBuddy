@@ -98,6 +98,10 @@ public class ForwardService extends Service {
         timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 100);
     }
 
+    public void calibrate() {
+        angleSensor.calibrate();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
