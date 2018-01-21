@@ -95,7 +95,7 @@ public class ForwardService extends Service {
     public void start() {
         running = true;
         timer = new Timer();
-        timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 300);
+        timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 100);
     }
 
     @Override
