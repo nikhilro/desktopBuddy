@@ -6,7 +6,6 @@ import os
 import math
 
 pyautogui.FAILSAFE = False
-
 HOST = "100.64.135.133"
 PORT = 12345
 
@@ -24,35 +23,27 @@ PORT = 12345
 10 = run commands in terminal -> send a string to be executed
 '''
 
-
 def startClient():
+    mouseSensitivity = 100.04     # tolerance for magnetic field fluctuation
+    scrollSensitivity = 10.0     # number of clicks to scroll
+    isOn = 0
+
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind((HOST, PORT))
     print("Starting client...")
-    mouseSensitivity = 30.0       # tolerance for magnetic field fluctuation
-    scrollSensitivity = 10.0     # number of clicks to scroll
-    isOn = 0
 
     while True:
         data, addr = s.recvfrom(1024)
         command = int(data[0])
-        prevX = 0
-        prevZ = 0
 
         # move the mouse
         if command == 0:
             coords = struct.unpack('<3d', data[1:])
             print(coords)
-            x = coords[0]
-            y = coords[1]
-            z = coords[2]
-            angle = math.atan(x / z)
-            distance = (1/math.sqrt(x*x+y*y+z*z))**(1.0/3.0)
-            screenX = math.sin(angle) * distance
-            screenZ = math.sin(angle) * distance
-            pyautogui.moveRel(screenX * mouseSensitivity, screenZ * mouseSensitivity)
-            prevX = screenX
-            prevZ = screenZ
+            pitchX = coords[0]
+            rollY = coords[1]
+            azimuthZ = coords[2]
+            pyautogui.moveRel(azimuthZ * mouseSensitivity, pitchX * mouseSensitivity, 0.01)
 
         # click
         elif command == 1:
@@ -82,11 +73,12 @@ def startClient():
                 isOn = 0
                 pyautogui.mouseUp()
             
-        # center cursor
+        # calibrate cursor
         elif command == 4:
             centerX = pyautogui.size()[0] / 2
             centerY = pyautogui.size()[1] / 2
-            pyautogui.moveTo(centerX, centerY, 0.2)
+            pyautogui.moveTo(centerX, centerY, 0.05)
+
 
         # change sensitivity; Should we include possibility for double/half etc.?
         elif command == 5: 
@@ -121,7 +113,7 @@ def startClient():
         elif command == 7:
             operation = data[1:].decode("utf-8") 
             pyautogui.keyDown(operation)
-        
+
         # keyboard shortcuts
         # ['copy', 'paste', 'cut', 'undo', 'redo', 'tabs', 'desktopright', 'desktopleft', 'desktopnew', 'gohome']
         elif command == 8:
@@ -148,16 +140,24 @@ def startClient():
                 pyautogui.hotkey('win', 'ctrl', 'd')
             elif operation == 'gohome':
                 pyautogui.hotkey('win', 'd')
-        
+
         # open application
         # eg. ['chrome', 'chromium']
         elif command == 9:
             operation = data[1:].decode("utf-8")
-            if os.name == 'nt': #Windows
-                operation = "start " + operation
-                os.system(operation) 
-            elif os.name == 'posix': #Linux/macOS
-                os.system(operation)
+            #if os.name == 'nt': #Windows
+            #    operation = "start " + operation
+            #    os.system(operation)
+            #elif os.name == 'posix': #Linux/macOS
+            #    os.system(operation)
+            if (data[1:] == b'browser'):
+                webbrowser.open('https://google.com')
+            elif (data[1:] == b'drive'):
+                webbrowser.open('https://drive.google.com')
+            elif (data[1:] == b'gmail'):
+                webbrowser.open('https://gmail.com')
+            elif (data[1:] == b'newtab'):
+                webbrowser.open_new_tab('https://google.com')
 
         # run commands in terminal
         elif command == 10:
