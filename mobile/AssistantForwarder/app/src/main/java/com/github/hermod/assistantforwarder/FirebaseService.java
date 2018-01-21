@@ -66,12 +66,9 @@ public class FirebaseService extends FirebaseMessagingService {
                     forwardService.sendKey("browserback");
                     break;
                 case OPEN:
-                    forwardService.sendApplication("chrome");
+                case DRIVE:
                 case NEWTAB:
-                    forwardService.sendShortcut("ctrl+t");
-                    break;
-                //case DRIVE:
-                //    forwardService.openURL("https://drive.google.com");
+                    forwardService.sendApplication(data.get("action"));
                 case PAUSE:
                 case PLAY:
                     forwardService.sendKey("playpause");

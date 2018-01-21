@@ -13,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class ForwardService extends Service {
-    private Magnetometer magnetometer;
+    private AngleSensor angleSensor;
     private Timer timer;
     private DatagramSocket socket;
     private InetAddress dest;
@@ -38,9 +38,9 @@ public class ForwardService extends Service {
         return null;
     }
 
-    private byte[] serializeData(byte command, Magnetometer.Vector field) {
+    private byte[] serializeData(byte command, float[] posn) {
         return ByteBuffer.allocate(25).order(ByteOrder.LITTLE_ENDIAN).put(command).
-                putDouble(field.x).putDouble(field.y).putDouble(field.z).array();
+                putDouble(posn[0]).putDouble(posn[1]).putDouble(posn[2]).array();
     }
 
     private void sendData(byte[] data) {
@@ -81,10 +81,10 @@ public class ForwardService extends Service {
     }
 
     public void sendPosition() {
-        Magnetometer.Vector field = magnetometer.getNormalizedReadings();
-        byte[] data = serializeData((byte)0, field);
+        float[] orientation = angleSensor.getReadings();
+        byte[] data = serializeData((byte)0, orientation);
         this.sendData(data);
-        System.out.println(field);
+        System.out.printf("%f %f %f\n", orientation[0], orientation[1], orientation[2]);
     }
 
     public void pause() {
@@ -95,21 +95,15 @@ public class ForwardService extends Service {
     public void start() {
         running = true;
         timer = new Timer();
-        timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 100);
+        timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 10);
     }
-
-    /*public void calibrate() {
-        magnetometer.calibrate();
-        Magnetometer.Vector background = magnetometer.getBackgroundReadings();
-        this.sendData(ByteBuffer.allocate(17).put((byte)4).putDouble(background.x).putDouble(background.y).array());
-    }*/
 
     @Override
     public void onCreate() {
         super.onCreate();
         try {
-            magnetometer = new Magnetometer();
-            magnetometer.start();
+            angleSensor = new AngleSensor();
+            angleSensor.start();
             socket = new DatagramSocket(destPort);
             dest = InetAddress.getByName("100.64.135.133");
             ForwardService.sInstance = this;
