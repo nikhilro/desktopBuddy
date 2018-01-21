@@ -81,7 +81,7 @@ public class ForwardService extends Service {
     }
 
     public void sendPosition() {
-        Magnetometer.Vector field = magnetometer.getNormalizedReadings();
+        Magnetometer.Vector field = magnetometer.getReadings();
         byte[] data = serializeData((byte)0, field);
         this.sendData(data);
         System.out.println(field);
@@ -100,6 +100,8 @@ public class ForwardService extends Service {
 
     public void calibrate() {
         magnetometer.calibrate();
+        Magnetometer.Vector background = magnetometer.getBackgroundReadings();
+        this.sendData(ByteBuffer.allocate(9).put((byte)4).putDouble(background.x).putDouble(background.z).array());
     }
 
     @Override

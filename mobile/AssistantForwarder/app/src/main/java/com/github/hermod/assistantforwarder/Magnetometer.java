@@ -135,9 +135,13 @@ public class Magnetometer implements SensorEventListener {
         this.status = status;
     }
 
+    public Vector getReadings() { return this.rawField; }
+
     public Vector getNormalizedReadings() {
         return this.adjustedField;
     }
+
+    public Vector getBackgroundReadings() { return this.backgroundField; }
 
     public Vector getPosition() {
         double dist = Math.sqrt(Math.pow(adjustedField.x, 2) + Math.pow(adjustedField.y, 2) + Math.pow(adjustedField.z, 2));
