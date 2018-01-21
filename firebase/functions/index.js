@@ -32,7 +32,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                 const parameters = request.body.result.parameters;
                 const contexts = request.body.result.contexts;
 
-                var registration_token = "dqsuUa_GUHA:APA91bHlNzosy1ssVUx56Sz7ZG80lTo_Zbcic-szbQAeiJYCH6MIfijsf1iqgk-7UT7s8mHMRf-oI5aKirRmZ7-9unvQD1upo2-6S_gTYwCpw2fKAX_yLCHbJxjeem2A0s_I4ujacy6j";
+                var registration_token = "ebwNkyLL-yU:APA91bEt538QoC5kQG7pspJ20wNXSkYcPH2A2gDJpP5AoidmeB8Yeeo7LOdDlDpeaTSoaj9Qb2BCyZP9rCefrw1iI5VSxQu6B02HjDGRVaDutg6spRG_1rTgzHfNuisY5pSV5ULoLPNX";
+                //var registration_token = 'dq4XgfBwjaw:APA91bHSmYIhWixjAxjZCBTHm3CPaQOU4we_yRIHpRK_mz0nGPhH9evnnxLX0BRpmwZLWwDkiaZFO1I4wafrqk3zeohbTXBw1J4lt8D5E9XEaLFKpL5etl0-KA1eowZhuDiaDiajbB7Q';
 
                 const actionHandlers = {
                     'input.welcome': () => {
@@ -43,11 +44,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                     },
                     'mouse.activate': () => {
                         send_message(registration_token, {data: {action: 'mouse.activate'}});
-                        app.ask('Magnet mouse activated.');
+                        app.ask('Gyro mouse activated.');
                     },
                     'mouse.deactivate': () => {
                         send_message(registration_token, {data: {action: 'mouse.deactivate'}});
-                        app.ask('Magnet mouse deactivated.');
+                        app.ask('Gyro mouse deactivated.');
                     },
                     'mouse.leftclick': () => {
                         send_message(registration_token, {data:{action: 'mouse.leftclick'}});
@@ -56,6 +57,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                     'mouse.rightclick': () => {
                         send_message(registration_token, {data:{action: 'mouse.rightclick'}});
                         app.ask('Click!');
+                    },
+                    'CalibrateMouse.CalibrateMouse-yes': () => {
+                        send_message(registration_token, {data:{action: 'mouse.calibrate'}});
+                        app.ask('The mouse is now calibrated!');
                     },
                     'keyboard.type': () => {
                         send_message(registration_token, {data:{action: 'keyboard.type', typed: parameters.text}});
@@ -72,6 +77,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                     'keyboard.pageup': () => {
                         send_message(registration_token, {data:{action: 'keyboard.pageup'}});
                         app.ask('Scrolling up.');
+                    },
+                    'keyboard.find': () => {
+                        send_message(registration_token, {data:{action: 'keyboard.find', typed: parameters.query}});
+                        app.ask('Finding: "' + parameters.query + '"');
                     },
                     'browser.back': () => {
                         send_message(registration_token, {data:{action: 'browser.back'}});
@@ -93,6 +102,18 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                         send_message(registration_token, {data:{action: 'browser.drive'}});
                         app.ask('Opening your Google Drive.');
                     },
+                    'browser.gmail': () => {
+                        send_message(registration_token, {data:{action: 'browser.gmail'}});
+                        app.ask('Opening your GMail.');
+                    },
+                    'browser.search': () => {
+                        send_message(registration_token, {data:{action: 'browser.search', query: parameters.query}});
+                        app.ask('Searched: "' + parameters.query + '"');
+                    },
+                    'browser.refresh': () => {
+                        send_message(registration_token, {data:{action: 'browser.refresh'}});
+                        app.ask('Refreshed browser.');
+                    },
                     'media.pause': () => {
                         send_message(registration_token, {data:{action: 'media.pause'}});
                         app.ask('Pausing media.');
@@ -112,6 +133,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                     'media.volumedown': () => {
                         send_message(registration_token, {data:{action: 'media.volumedown'}});
                         app.ask('Turning it down.');
+                    },
+                    'take.control': () => {
+                        send_message(registration_token, {data:{action: 'take.control', target: parameters.owner}});
+                        app.ask('Talking to ' + parameters.owner + " laptop");
                     },
                     'default': () => {
                         app.ask('IDK what that action is');
