@@ -93,7 +93,7 @@ public class FirebaseService extends FirebaseMessagingService {
                     } else if (target.equals("callum") || target.equals("calum")) {
                         forwardService.changeIP(InetAddress.getByName("100.64.130.123"));
                     } else if (target.equals("nikhil")) {
-                        forwardService.changeIP(InetAddress.getByName("100.64.130.123"));
+                        forwardService.changeIP(InetAddress.getByName("100.64.89.4"));
                     }
 
                     break;
