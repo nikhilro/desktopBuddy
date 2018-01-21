@@ -6,15 +6,15 @@ import os
 import math
 
 pyautogui.FAILSAFE = False
-HOST = "100.64.135.133"
+HOST = "100.64.135.132"
 PORT = 12345
 
 '''
 0 = move the mouse -> uses sockets to get the new coordinates
 1 = click -> # of clicks; 0 for left and 1 for right
-2 = scroll -> pixels moved; 0 for vertical and 0 for horizontal 
+2 = scroll -> pixels moved; 0 for vertical and 0 for horizontal
 3 = hold/select -> it changes the isOn value
-4 = center cursor 
+4 = center cursor
 5 = changeSensitivity -> 1 for changing scroll's senstivity and 0 for mouse; 1 if multiplier else addition; 1 if decrease; number
 6 = write stuff -> just send a string
 7 = keyboard keys -> send a string from the array below
@@ -25,7 +25,7 @@ PORT = 12345
 
 def startClient():
     mouseSensitivity = 100.04     # tolerance for magnetic field fluctuation
-    scrollSensitivity = 10.0     # number of clicks to scroll
+    scrollSensitivity = 1.0     # number of clicks to scroll
     isOn = 0
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -43,7 +43,7 @@ def startClient():
             pitchX = coords[0]
             rollY = coords[1]
             azimuthZ = coords[2]
-            pyautogui.moveRel(azimuthZ * mouseSensitivity, pitchX * mouseSensitivity, 0.01)
+            pyautogui.moveRel(azimuthZ * mouseSensitivity, pitchX * mouseSensitivity)
 
         # click
         elif command == 1:
@@ -63,7 +63,7 @@ def startClient():
                 pyautogui.scroll(direction * scrollSensitivity)
             else:
                 pyautogui.hscroll(direction * scrollSensitivity)
-        
+
         # hold/select
         elif command == 3:
             if isOn == 0:
@@ -72,7 +72,7 @@ def startClient():
             else:
                 isOn = 0
                 pyautogui.mouseUp()
-            
+
         # calibrate cursor
         elif command == 4:
             centerX = pyautogui.size()[0] / 2
@@ -81,37 +81,37 @@ def startClient():
 
 
         # change sensitivity; Should we include possibility for double/half etc.?
-        elif command == 5: 
+        elif command == 5:
             isScroll = int(data[1]) # default 0 set by andriod service
-            isMult = int(data[2]) 
+            isMult = int(data[2])
             isDec  = int(data[3])
             number = int(data[4])
             if isMult == 0:
                 if isScroll == 0:
-                    mouseSensitivity = mouseSensitivity + number 
+                    mouseSensitivity = mouseSensitivity + number
                 else:
                     scrollSensitivity = scrollSensitivity + number
             else:
                 if isDec == 0:
                     if isScroll == 0:
-                        mouseSensitivity = mouseSensitivity * number 
+                        mouseSensitivity = mouseSensitivity * number
                     else:
                         scrollSensitivity = scrollSensitivity * number
                 else:
                     if isScroll == 0:
-                        mouseSensitivity = mouseSensitivity / number 
+                        mouseSensitivity = mouseSensitivity / number
                     else:
                         scrollSensitivity = scrollSensitivity / number
 
         # write stuff
         elif command == 6:
-            string = data[1:].decode("utf-8") 
+            string = data[1:].decode("utf-8")
             pyautogui.typewrite(string)
-        
+
         # hotkeys
         # ['accept', 'add', 'alt', 'altleft', 'altright', 'apps', 'backspace', 'browserback', 'browserfavorites', 'browserforward', 'browserhome', 'browserrefresh', 'browsersearch', 'browserstop', 'capslock', 'clear', 'convert', 'ctrl', 'ctrlleft', 'ctrlright', 'decimal', 'del', 'delete', 'divide', 'down', 'end', 'enter', 'esc', 'escape', 'execute', 'f1', 'f10', 'f11', 'f12', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'final', 'fn', 'hanguel', 'hangul', 'hanja', 'help', 'home', 'insert', 'junja', 'kana', 'kanji', 'launchapp1', 'launchapp2', 'launchmail', 'launchmediaselect', 'left', 'modechange', 'multiply', 'nexttrack', 'nonconvert', 'num0', 'num1', 'num2', 'num3', 'num4', 'num5', 'num6','num7', 'num8', 'num9', 'numlock', 'pagedown', 'pageup', 'pause', 'pgdn', 'pgup', 'playpause', 'prevtrack', 'print', 'printscreen', 'prntscrn', 'prtsc', 'prtscr', 'return', 'right', 'scrolllock', 'select', 'separator', 'shift', 'shiftleft', 'shiftright', 'sleep', 'space', 'stop', 'subtract', 'tab', 'up', 'volumedown', 'volumemute', 'volumeup', 'win', 'winleft', 'winright', 'yen', 'command', 'option', 'optionleft', 'optionright']
         elif command == 7:
-            operation = data[1:].decode("utf-8") 
+            operation = data[1:].decode("utf-8")
             pyautogui.keyDown(operation)
 
         # keyboard shortcuts
