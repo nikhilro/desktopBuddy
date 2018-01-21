@@ -1,3 +1,4 @@
+import webbrowser
 import pyautogui
 import socket
 import time
@@ -24,7 +25,7 @@ PORT = 12345
 '''
 
 def startClient():
-    mouseSensitivity = 3.0     # tolerance for magnetic field fluctuation
+    mouseSensitivity = 1.5     # tolerance for magnetic field fluctuation
     scrollSensitivity = 10.0     # number of clicks to scroll
     isOn = 0
 
@@ -39,7 +40,6 @@ def startClient():
         # move the mouse
         if command == 0:
             coords = struct.unpack('<3d', data[1:])
-            print(coords)
             azimuthZ = coords[0]
             pitchX = coords[1]
             rollY = coords[2]
@@ -152,13 +152,13 @@ def startClient():
             #    os.system(operation)
             #elif os.name == 'posix': #Linux/macOS
             #    os.system(operation)
-            if (data[1:] == b'browser'):
+            if (operation == 'browser.open'):
                 webbrowser.open('https://google.com')
-            elif (data[1:] == b'drive'):
+            elif (operation == 'browser.drive'):
                 webbrowser.open('https://drive.google.com')
-            elif (data[1:] == b'gmail'):
+            elif (operation == 'browser.gmail'):
                 webbrowser.open('https://gmail.com')
-            elif (data[1:] == b'newtab'):
+            elif (operation == 'browser.newtab'):
                 webbrowser.open_new_tab('https://google.com')
 
         # run commands in terminal
