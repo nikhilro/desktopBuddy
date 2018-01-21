@@ -13,6 +13,10 @@ public class Magnetometer implements SensorEventListener {
     public class Vector {
         public double x, y, z;
         public Vector() {this.x = 0; this.y = 0; this.z = 0;}
+        @Override
+        public String toString() {
+            return String.format("x: %f, y: %f, z: %f", this.x, this.y, this.z);
+        }
     }
 
     public static int ERROR = -1;
@@ -60,12 +64,10 @@ public class Magnetometer implements SensorEventListener {
             System.out.println("No magnetometer");
         }
 
-        this.calibrate();
-
         return this.status;
     }
 
-    private void calibrate() {
+    public void calibrate() {
         final Timer timer = new Timer();
         final Timer cancelTimer = new Timer();
         calibrationCount = 1;
@@ -83,7 +85,7 @@ public class Magnetometer implements SensorEventListener {
             public void run() {
                 timer.cancel();
             }
-        }, 5000);
+        }, 1000);
     }
 
     /**
@@ -139,17 +141,11 @@ public class Magnetometer implements SensorEventListener {
 
     public Vector getPosition() {
         double dist = Math.sqrt(Math.pow(adjustedField.x, 2) + Math.pow(adjustedField.y, 2) + Math.pow(adjustedField.z, 2));
-        if (dist == 0)
-            return position;
-        double cbdist = 1/Math.cbrt(Math.pow(adjustedField.x, 2) + Math.pow(adjustedField.y, 2) + Math.pow(adjustedField.z, 2));
-        position.x = Math.cos(adjustedField.x/dist)*cbdist;
-        position.y = Math.cos(adjustedField.y/dist)*cbdist;
-        position.z = Math.cos(adjustedField.z/dist)*cbdist;
+        double cbdist = 1/Math.cbrt(dist);
+        double angle = Math.atan2(adjustedField.y, adjustedField.x) / 1.5;
+        position.x = cbdist * Math.sin(angle);
+        position.y = cbdist * Math.cos(angle);
+        position.z = adjustedField.z;
         return position;
-    }
-
-    @Override
-    public String toString() {
-        return String.format("x: %f, y: %f, z: %f", adjustedField.x, adjustedField.y, adjustedField.z);
     }
 }

@@ -84,7 +84,7 @@ public class ForwardService extends Service {
         Magnetometer.Vector field = magnetometer.getNormalizedReadings();
         byte[] data = serializeData((byte)0, field);
         this.sendData(data);
-        System.out.println(magnetometer.toString());
+        System.out.println(field);
     }
 
     public void pause() {
@@ -96,6 +96,10 @@ public class ForwardService extends Service {
         running = true;
         timer = new Timer();
         timer.scheduleAtFixedRate(new MagnetometerTask(this), 1000, 100);
+    }
+
+    public void calibrate() {
+        magnetometer.calibrate();
     }
 
     @Override

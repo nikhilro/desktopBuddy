@@ -14,6 +14,7 @@ public class FirebaseService extends FirebaseMessagingService {
     private final static String DEACTIVATE = "mouse.deactivate";
     private final static String LEFTCLICK = "mouse.leftclick";
     private final static String RIGHTCLICK = "mouse.rightclick";
+    private final static String CALIBARTE = "mouse.calibrate";
     private final static String ENTER = "keyboard.enter";
     private final static String TYPE = "keyboard.type";
     private final static String PAGEUP = "keyboard.pageup";
@@ -50,6 +51,8 @@ public class FirebaseService extends FirebaseMessagingService {
                 case RIGHTCLICK:
                     forwardService.sendClick(true);
                     break;
+                case CALIBARTE:
+                    forwardService.calibrate();
                 case ENTER:
                     forwardService.sendKey("enter");
                     break;
