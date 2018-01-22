@@ -63,9 +63,9 @@ public class ForwardService extends Service {
         this.sendData(ByteBuffer.allocate(bApp.length + 1).put((byte)9).put(bApp).array());
     }
 
-    public void sendClick(boolean right) {
+    public void sendClick(boolean right, boolean twoClicks) {
         // Click (1), repetitions (1), left/right (0/1)
-        this.sendData(ByteBuffer.allocate(3).put((byte)1).put((byte)1).put(right? (byte)1 : (byte)0).array());
+        this.sendData(ByteBuffer.allocate(3).put((byte)1).put(twoClicks ? (byte)2 : (byte)1).put(right? (byte)1 : (byte)0).array());
     }
 
     public void sendKey(String keyname) {
@@ -74,9 +74,10 @@ public class ForwardService extends Service {
         this.sendData(ByteBuffer.allocate(bKeyname.length + 1).put((byte)7).put(bKeyname).array());
     }
 
-    public void sendShortcut(String shortcut) {
-        byte[] bShortcut = shortcut.getBytes();
-        this.sendData(ByteBuffer.allocate(bShortcut.length + 1).put((byte)8).put(bShortcut).array());
+    public void sendHotkey(String keyname) {
+        byte[] bKeyname = keyname.getBytes();
+        // Key (8), keyname (bytes[])
+        this.sendData(ByteBuffer.allocate(bKeyname.length + 1).put((byte)8).put(bKeyname).array());
     }
 
     public void sendText(String text) {

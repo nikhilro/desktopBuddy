@@ -25,7 +25,7 @@ PORT = 12345
 '''
 
 def startClient():
-    mouseSensitivity = 1.5     # tolerance for magnetic field fluctuation
+    mouseSensitivity = 1.2       # tolerance for magnetic field fluctuation
     scrollSensitivity = 10.0     # number of clicks to scroll
     isOn = 0
 
@@ -45,7 +45,8 @@ def startClient():
             rollY = coords[2]
             if azimuthZ > 180:
                 azimuthZ -= 360
-            pyautogui.moveRel(azimuthZ * mouseSensitivity, pitchX * mouseSensitivity)
+            if abs(azimuthZ) > 5 or abs(pitchX) > 5:
+                pyautogui.moveRel(azimuthZ * mouseSensitivity, pitchX * (mouseSensitivity - 0.5))
 
         # click
         elif command == 1:
@@ -124,6 +125,8 @@ def startClient():
                 pyautogui.hotkey('ctrl', 'c')
             elif operation == 'find':
                 pyautogui.hotkey('ctrl', 'f')
+            elif operation == 'switchtab':
+                pyautogui.hotkey('ctrl', 'tab')
             elif operation == 'paste':
                 pyautogui.hotkey('ctrl', 'v')
             elif operation == 'cut':
@@ -142,6 +145,10 @@ def startClient():
                 pyautogui.hotkey('win', 'ctrl', 'd')
             elif operation == 'gohome':
                 pyautogui.hotkey('win', 'd')
+            elif operation == 'close':
+                pyautogui.hotkey('alt', 'f4')
+            elif operation == 'fullscreen':
+                pyautogui.hotkey('alt', 'enter')
 
         # open application
         # eg. ['chrome', 'chromium']
