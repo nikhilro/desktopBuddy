@@ -1,32 +1,18 @@
 # Desktop Buddy
 
-An android background service to remotely control desktop input using voice commands via Google Assistant and the built-in orientation derived from Sensor fusion.
+An Android background service to remotely control desktop input
+using Google Assistant voice commands and orientation data from sensors.
 
-## Inspiration
-   From realms beyond us 
-   
-## What it does
-   Everything a man could dream of ;)
-   
 ## How we built it
    Google assistant action -> Dialogflow -> Firebase -> Android background service -> Python server on the desktop 
   
 ## Challenges we ran into
-  1. Using Cordova to get magnetic readings and then scraping it all cause Cordova doesn't like Node
-  2. Google Assitant is incapable of local fulfillment so we had to add a unnecessary step of going through Firebase
-  3. Firebase </3 databases
-  4. Sensors in phones are not the most accurate and can lead to jitter in mouse movements
-  5. We couldn't get the position of the magnet from the magnetic field strength accurately enough 
+  1. We started out with using Cordova to get magnetic readings and then had to switch to Java due to inability to send requests.
+  2. Google Assitant is incapable of local fulfillment so we had to add an unnecessary step of going through Firebase.
+  3. Firebase + databases = lag.
+  4. Sensors in phones are not the most accurate and can lead to jitter in mouse movements.
+  5. We couldn't reliably deduce the position of the magnet from the magnetic field strength. 
   
 ## Accomplishments that we're proud of
-  1. Webhooks worked beautifully <3
-  2. Integration of all the parts 
-  
-## What we learned
-  Google is good to consumers but their dev options are kinda shiet (Top 10 Anime Betrayals)
-  
-## What's next for Desktop Buddy
-  Gonna wait for Google to implement local fulfillment in Assistant
-  
-## How do we feel?
-  Lacking of fruits :)
+  1. Forwaring pipeline was fast enough for negligible control latency.
+  2. Seamless integration of all the parts.
