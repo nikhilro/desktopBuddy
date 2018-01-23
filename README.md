@@ -6,7 +6,7 @@ An Android background service to remotely control desktop input using voice comm
    Google Assistant/Actions SDK -> Dialogflow -> Firebase -> Android Background Service -> Python Desktop Client 
   
 ## What it does
-   Allows users to control keyboard and mouse input by speaking commands and tilting their phone. Features browser functionality such as switching tabs, opening Google Drive and Gmail and media controls such as fullscreen, play/pause, and volume control.
+   Allows users to control keyboard and mouse input by speaking commands and tilting their phone. Features browser functionality such as switching tabs, opening Google Drive and Gmail and media controls such as fullscreen, play/pause, and volume control. It also operates cross-platform and supports Windows, Linux and macOS.
   
 ## Challenges we ran into
   1. We started out with using Cordova to get magnetometer readings and then had to switch to Java due to inability to send requests.
@@ -21,5 +21,4 @@ An Android background service to remotely control desktop input using voice comm
   3. Getting mouse control to work accurately.
   
 ## What's next for Desktop Buddy?
-   * Adding more voice commands
-   * Creating an actual desktop service application with more functionality such as adding or customizing voice commands
+   * Creating an actual desktop application with more functionality such as adding or customizing voice commands
