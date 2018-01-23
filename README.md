@@ -16,7 +16,7 @@ An Android background service to remotely control desktop input using voice comm
   5. Sensors in phones are not the most accurate and can lead to jitter in mouse movements.
   
 ## Accomplishments that we're proud of
-  1. Forwaring pipeline was fast enough for negligible control latency.
+  1. Forwarding pipeline was fast enough for negligible control latency.
   2. Seamless integration of all the parts.
   3. Getting mouse control to work accurately.
   
