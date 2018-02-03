@@ -7,7 +7,7 @@ import os
 import math
 
 pyautogui.FAILSAFE = False
-HOST = "100.64.135.133"
+HOST = "192.168.43.97"
 PORT = 12345
 
 '''

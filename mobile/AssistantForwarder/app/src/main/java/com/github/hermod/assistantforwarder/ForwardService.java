@@ -114,7 +114,7 @@ public class ForwardService extends Service {
             angleSensor = new AngleSensor();
             angleSensor.start();
             socket = new DatagramSocket(destPort);
-            dest = InetAddress.getByName("100.64.135.133");
+            dest = InetAddress.getByName("192.168.43.97");
             ForwardService.sInstance = this;
             this.start();
         }
