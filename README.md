@@ -2,6 +2,12 @@
 
 An Android background service to remotely control desktop input using voice commands via Google Assistant and orientation data from rotation sensors.
 
+**Watch it in action** 
+
+[![Watch the video](https://img.youtube.com/vi/a6UrweRvcYU/0.jpg)](https://youtu.be/a6UrweRvcYU)
+
+Please note that the mouse cursor is being controlled by the phone's orientation but our laptop screen recorder (Camtasia) didn't record the mouse cursor. Sorry for the confusion.
+
 ## How we built it
    Google Assistant/Actions SDK -> Dialogflow -> Firebase -> Android Background Service -> Python Desktop Client 
   
