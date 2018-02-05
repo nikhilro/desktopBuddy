@@ -121,7 +121,7 @@ public class FirebaseService extends FirebaseMessagingService {
                     String target = data.get("target").replace("'s", "").toLowerCase();
                     try {
                         if (target.equals("edwin") || target.equals("my")) {
-                            forwardService.changeIP(InetAddress.getByName("100.64.135.133"));
+                            forwardService.changeIP(InetAddress.getByName("192.168.43.97"));
                         } else if (target.equals("callum") || target.equals("calum")) {
                             forwardService.changeIP(InetAddress.getByName("100.64.130.123"));
                         } else if (target.equals("nikhil")) {

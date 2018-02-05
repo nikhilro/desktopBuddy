@@ -27,12 +27,12 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
             console.log(user.key);
             if (user.child('user_id').val() === request.body.originalRequest.data.user.userId) {
                 console.log(user.child('reg_token').val());
-                registration_token = user.child('reg_token').val();*/
+                registration_token = user.child('reg_token').val();*/   
                 let action = request.body.result.action;
                 const parameters = request.body.result.parameters;
                 const contexts = request.body.result.contexts;
 
-                var registration_token = "ebwNkyLL-yU:APA91bEt538QoC5kQG7pspJ20wNXSkYcPH2A2gDJpP5AoidmeB8Yeeo7LOdDlDpeaTSoaj9Qb2BCyZP9rCefrw1iI5VSxQu6B02HjDGRVaDutg6spRG_1rTgzHfNuisY5pSV5ULoLPNX";
+                var registration_token = "d3DNkExunxM:APA91bGJkkx_RNsrCTr6AJQb-1hbgM42evVszLb--6sT-fClUf1SNDqNqhOMZFhh17IUldbP1AAaJjNxkYCxGyAbDTsrMJaH8eZ-wMM63EbHRCnpiJ1crRr6LVYn_vB_We-3Pr4p5Ek9";
                 //var registration_token = 'dq4XgfBwjaw:APA91bHSmYIhWixjAxjZCBTHm3CPaQOU4we_yRIHpRK_mz0nGPhH9evnnxLX0BRpmwZLWwDkiaZFO1I4wafrqk3zeohbTXBw1J4lt8D5E9XEaLFKpL5etl0-KA1eowZhuDiaDiajbB7Q';
 
                 const actionHandlers = {
@@ -57,6 +57,10 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
                     'mouse.rightclick': () => {
                         send_message(registration_token, {data:{action: 'mouse.rightclick'}});
                         app.ask('Click!');
+                    },
+                    'mouse.doubleclick': () => {
+                        send_message(registration_token, {data:{action: 'mouse.doubleclick'}});
+                        app.ask('Click! Click!');
                     },
                     'CalibrateMouse.CalibrateMouse-yes': () => {
                         send_message(registration_token, {data:{action: 'mouse.calibrate'}});
